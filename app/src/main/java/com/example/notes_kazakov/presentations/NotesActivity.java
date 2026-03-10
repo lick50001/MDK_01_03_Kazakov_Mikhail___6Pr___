@@ -56,7 +56,7 @@ public class NotesActivity extends AppCompatActivity {
         itemsParent.removeAllViews();
 
         for (int i = 0; i < notes.size(); i ++){
-            View item_notes = LayoutInflater.from(this).inflate(R.layout.item_note, itemsParent, false);
+            View item_notes = LayoutInflater.from(this).inflate(R.layout.activity_item_note, itemsParent, false);
 
             TextView tvTitle = item_notes.findViewById(R.id.tv_title);
             TextView tvText = item_notes.findViewById(R.id.tv_text);
@@ -91,5 +91,5 @@ public class NotesActivity extends AppCompatActivity {
 
             return  false;
         }
-    }
+    };
 }
