@@ -37,8 +37,8 @@ public class NotesActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.et_search);
 
         bthAddNotes.setOnClickListener(v -> {
-            Intent intentActivityNote = new Intent(this, NotesActivity.class);
-            startActivity(intentActivityNote);
+            Intent intent = new Intent(this, NoteActivity.class);
+            startActivity(intent);
         });
 
         etSearch.setOnKeyListener(SearchListner);
