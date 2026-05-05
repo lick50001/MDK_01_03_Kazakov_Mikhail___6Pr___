@@ -12,6 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 public class NotesContext {
     public static ArrayList<Note> AllNotes(){
         ArrayList<Note> allNotes = new ArrayList<>();
+
+        if (DbContext.sql == null || !DbContext.sql.isOpen()) {
+            return allNotes;
+        }
+
         Cursor cursor = DbContext.sql.query("Notes", null, null, null, null, null, null);
 
         if (cursor.moveToFirst() == false){
@@ -37,15 +42,17 @@ public class NotesContext {
         CV.put("Text", note.text);
         CV.put("Date", note.date);
         CV.put("Color", note.color);
-        if (update == false){
-            DbContext.sql.insert(
-                    "Notes", null, CV);
-        }else {
+        if (!update){
+            long result = DbContext.sql.insert("Notes", null, CV);
+            System.out.println("Insert result: " + result);
+        } else {
             DbContext.sql.update("Notes", CV, "Id = ?", new String[] {String.valueOf(note.id)});
         }
     }
 
-    public static void Delete(Note note){
-        DbContext.sql.delete("Notes", "Id = ?", new String[]{String.valueOf(note.id)});
+    public static void LoadNotesFromDBToRepo(){
+        ArrayList<Note> notesFromDB = AllNotes();
+        RepoNotes.Notes.clear();
+        RepoNotes.Notes.addAll(notesFromDB);
     }
 }

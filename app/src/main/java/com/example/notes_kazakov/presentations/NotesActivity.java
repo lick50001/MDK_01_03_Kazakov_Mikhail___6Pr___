@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,19 +40,28 @@ public class NotesActivity extends AppCompatActivity {
         itemsParent = findViewById(R.id.gl_notes);
         etSearch = findViewById(R.id.et_search);
 
+        dbContext = new DbContext(this);
+
+        NotesContext.LoadNotesFromDBToRepo();
+
+        Toast.makeText(this, "Загружено заметок: " + RepoNotes.Notes.size(), Toast.LENGTH_SHORT).show();
+
         bthAddNotes.setOnClickListener(v -> {
             Intent intent = new Intent(this, NoteActivity.class);
             startActivity(intent);
         });
-        etSearch.setOnKeyListener(SearchListner);
-        dbContext = new DbContext(this);
+
+        etSearch.setOnKeyListener(SearchListener);
+
         LoadNotes(RepoNotes.Notes);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        LoadNotes(NotesContext.AllNotes());
+        NotesContext.LoadNotesFromDBToRepo();
+        LoadNotes(RepoNotes.Notes);
+        Toast.makeText(this, "Заметок в БД: " + RepoNotes.Notes.size(), Toast.LENGTH_SHORT).show();
     }
 
     public  void LoadNotes(ArrayList<Note> notes){
@@ -80,18 +90,17 @@ public class NotesActivity extends AppCompatActivity {
         }
     }
 
-    View.OnKeyListener SearchListner = new View.OnKeyListener(){
-        @Override
-        public  boolean onKey(View v, int keyCode, KeyEvent event){
-            String Search = etSearch.getText().toString();
+    View.OnKeyListener SearchListener = (v, keyCode, event) -> {
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
+            String Search = etSearch.getText().toString().toLowerCase();
 
-            ArrayList<Note> FindNotes = NotesContext.AllNotes().stream().filter(
-                    item -> item.text.contains(Search)
-            ).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<Note> FindNotes = NotesContext.AllNotes().stream()
+                    .filter(item -> item.text != null && item.text.toLowerCase().contains(Search) ||
+                            item.title != null && item.title.toLowerCase().contains(Search))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
             LoadNotes(FindNotes);
-
-            return  false;
         }
+        return false;
     };
 }
