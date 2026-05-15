@@ -1,4 +1,3 @@
-// com.example.notes_kazakov.datas.CategoryAdapter
 package com.example.notes_kazakov.datas;
 
 import android.content.Context;
@@ -8,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes_kazakov.R;
@@ -36,8 +36,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
-        holder.tvName.setText(category.Name);
-        holder.itemView.setActivated(category.Active);
+        holder.tvName.setText(category.getName());
+
+        // Меняем цвет текста в зависимости от активности
+        if (category.isActive()) {
+            holder.tvName.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+        } else {
+            holder.tvName.setTextColor(ContextCompat.getColor(context, android.R.color.black));
+        }
+
+        holder.tvName.setActivated(category.isActive());
 
         holder.itemView.setOnClickListener(v -> {
             if (onClickListener != null) {

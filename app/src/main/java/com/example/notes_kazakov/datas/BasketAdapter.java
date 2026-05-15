@@ -1,4 +1,3 @@
-// com.example.notes_kazakov.datas.BasketAdapter
 package com.example.notes_kazakov.datas;
 
 import android.content.Context;
@@ -41,26 +40,32 @@ public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Basket item = basketItems.get(position);
         holder.tvName.setText(item.Item.Name);
-        holder.tvPrice.setText("₽" + String.format("%.2f", item.Item.Price));
+        float price = item.Item.Price.floatValue();
+        holder.tvPrice.setText("₽" + String.format("%.2f", price));
         holder.tvCount.setText(String.valueOf(item.Count));
 
         holder.bthPlus.setOnClickListener(v -> {
             item.Count++;
             holder.tvCount.setText(String.valueOf(item.Count));
-            cost.setClick(v, position);
+            if (cost != null) {
+                cost.setClick(v, position);
+            }
         });
 
         holder.bthMinus.setOnClickListener(v -> {
             if (item.Count > 1) {
                 item.Count--;
                 holder.tvCount.setText(String.valueOf(item.Count));
-                cost.setClick(v, position);
+                if (cost != null) {
+                    cost.setClick(v, position);
+                }
             }
         });
 
         holder.bthDelete.setOnClickListener(v -> {
-            delete.setClick(v, position);
-            cost.setClick(v, position);
+            if (delete != null) {
+                delete.setClick(v, position);
+            }
         });
     }
 

@@ -47,7 +47,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:text="3 товара"
+        android:text="Товары"
         android:textSize="7pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,7 +154,7 @@
             android:id="@+id/bthOrder"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/background_button"
+            android:background="@drawable/background_button_new"
             android:text="Оформить заказ"
             android:textColor="@color/white" />
 
