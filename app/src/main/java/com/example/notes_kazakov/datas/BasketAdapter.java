@@ -1,3 +1,4 @@
+// com.example.notes_kazakov.datas.BasketAdapter
 package com.example.notes_kazakov.datas;
 
 import android.content.Context;
@@ -8,78 +9,79 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes_kazakov.R;
 
 import java.util.ArrayList;
 
-public class BasketAdapter extends RecyclerView.Adapter<Basket>.ViewHolder {
-    public iOnClickInterface Delete, Cost;
-    public LayoutInflater Inflater;
-    public ArrayList<Basket> BasketItems;
+public class BasketAdapter extends RecyclerView.Adapter<BasketAdapter.ViewHolder> {
 
-    public BasketAdapter(Context context, ArrayList<Basket> basketItems, iOnClickInterface delete, iOnClickInterface cost){
-        this.Inflater = LayoutInflater.from(context);
-        this.BasketItems = basketItems;
-        this.Delete = delete;
-        this.Cost = cost;
+    private final iOnClickInterface delete;
+    private final iOnClickInterface cost;
+    private final LayoutInflater inflater;
+    private final ArrayList<Basket> basketItems;
+
+    public BasketAdapter(Context context, ArrayList<Basket> basketItems, iOnClickInterface delete, iOnClickInterface cost) {
+        this.inflater = LayoutInflater.from(context);
+        this.basketItems = basketItems;
+        this.delete = delete;
+        this.cost = cost;
     }
+
+    @NonNull
     @Override
-    public BasketAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = Inflater.inflate(R.layout.item_basket, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.item_basket, parent, false);
         return new ViewHolder(view);
     }
-    @Override
-    public void onBindViewHolder(BasketAdapter.ViewHolder holder, int position){
-        Basket Item = BasketItems.get(position);
-        holder.tvName.setText(Item.Item.Name);
-        holder.tvPrice.setText("₽" + String.valueOf(Item.Item.Price));
-        holder.tvPrice.setText(String.valueOf(Item.Count));
 
-        holder.bthOlus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Item.Count ++;
-                holder.tvCount.setText(String.valueOf(Item.Count));
-                Cost.setClick(view, position);
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Basket item = basketItems.get(position);
+        holder.tvName.setText(item.Item.Name);
+        holder.tvPrice.setText("₽" + String.format("%.2f", item.Item.Price));
+        holder.tvCount.setText(String.valueOf(item.Count));
+
+        holder.bthPlus.setOnClickListener(v -> {
+            item.Count++;
+            holder.tvCount.setText(String.valueOf(item.Count));
+            cost.setClick(v, position);
+        });
+
+        holder.bthMinus.setOnClickListener(v -> {
+            if (item.Count > 1) {
+                item.Count--;
+                holder.tvCount.setText(String.valueOf(item.Count));
+                cost.setClick(v, position);
             }
         });
-        holder.bthMinus.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Item.Count ++;
-                holder.tvCount.setText(String.valueOf(Item.Count));
-                Cost.setClick(view, position);
-            }
-        });
-        holder.bthDelete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Delete.setClick(view, position);
-                Cost.setClick(view, position);
-            }
+
+        holder.bthDelete.setOnClickListener(v -> {
+            delete.setClick(v, position);
+            cost.setClick(v, position);
         });
     }
 
     @Override
-    public int getItemCount(){
-        return BasketItems.size();
+    public int getItemCount() {
+        return basketItems.size();
     }
 
-    public static class ViewHolder extends  RecyclerView.ViewHolder{
-        public TextView tvName, tvPrice, tvCount;
-        public ImageView bthPlus, bthMinus;
-        public LinearLayout bthDelete;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvName, tvPrice, tvCount;
+        ImageView bthPlus, bthMinus;
+        LinearLayout bthDelete;
 
-        ViewHolder(View view){
-            super(view);
-            tvName = view.findViewById(R.id.tv_name);
-            tvPrice = view.findViewById(R.id.tv_price);
-            tvCount = view.findViewById(R.id.tv_count);
-            bthPlus = view.findViewById(R.id.bthPlus);
-            bthMinus = view.findViewById(R.id.bthMinus);
-            bthDelete = view.findViewById(R.id.ll_delete);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvPrice = itemView.findViewById(R.id.tv_price);
+            tvCount = itemView.findViewById(R.id.tv_count);
+            bthPlus = itemView.findViewById(R.id.bthPlus);
+            bthMinus = itemView.findViewById(R.id.bthMinus);
+            bthDelete = itemView.findViewById(R.id.ll_delete);
         }
     }
 }

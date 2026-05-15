@@ -1,6 +1,5 @@
 package com.example.notes_kazakov.datas;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,51 +16,48 @@ import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
-    public iOnClickInterface AddBasket;
-    public LayoutInflater Inflater;
-    public ArrayList<ClipData.Item> Item;
-
-    public ItemAdapter(Context con, ArrayList<ClipData.Item> item, iOnClickListioner addBasket){
-        this.Inflater = LayoutInflater.from(con);
-        this.Item = item;
-        this.AddBasket = addBasket;
+    private final iOnClickInterface addBasket;
+    private final LayoutInflater inflater;
+    private final ArrayList<Item> items;
+    public ItemAdapter(Context context, ArrayList<Item> items, iOnClickInterface addBasket) {
+        this.inflater = LayoutInflater.from(context);
+        this.items = items;
+        this.addBasket = addBasket;
     }
+
     @NonNull
     @Override
-    public ItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = Inflater.inflate(R.layout.item_card, parent, false);
-        return new RecyclerView.ViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.item_card, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemAdapter.ViewHolder holder, int position) {
-        Item item = Item.get(position);
-        holder.tvName.setText(Item.Name);
-        holder.tvModell.setText(Item.Modell);
-        holder.tvPrice.setText("₽" + String.valueOf(Item.Price));
-        holder.bthAdd.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                AddBasket.setClick(view, Item.id);
-            }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Item currentItem = items.get(position);
+        holder.tvName.setText(currentItem.Name);
+        holder.tvModell.setText(currentItem.Modell);
+        holder.tvPrice.setText("₽" + currentItem.Price);
+        holder.bthAdd.setOnClickListener(v -> {
+            addBasket.setClick(v, currentItem.id);
         });
     }
 
     @Override
-    public int getItemCount() {return Item.size();}
+    public int getItemCount() {
+        return items.size();
+    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvName, tvModell, tvPrice;
-
         public LinearLayout bthAdd;
 
-        RecyclerView.ViewHolder(View view){
-            super(view);
-            tvName = view.findViewById(R.id.tv_name);
-            tvModell = view.findViewById(R.id.tv_modell);
-            tvPrice = view.findViewById(R.id.tv_price);
-
-            bthAdd = view.findViewById(R.id.bthAdd);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName = itemView.findViewById(R.id.tv_name);
+            tvModell = itemView.findViewById(R.id.tv_modell);
+            tvPrice = itemView.findViewById(R.id.tv_price);
+            bthAdd = itemView.findViewById(R.id.bthAdd);
         }
     }
 }

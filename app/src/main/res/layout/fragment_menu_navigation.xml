@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -13,21 +14,28 @@
         android:id="@+id/btnBasket"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:minWidth="56dp"
+        android:minHeight="56dp"
         android:background="@drawable/ic_basket"
         android:onClick="openBasketView"
+        android:contentDescription="Корзина"
+        android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Кнопка "Домой" (левая нижняя) -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnHome"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:background="@drawable/ic_home"
+        android:scaleType="center"
         android:layout_marginStart="44dp"
         android:layout_marginBottom="30dp"
+        android:contentDescription="Домой"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -36,9 +44,13 @@
         android:id="@+id/btnLike"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:background="@drawable/ic_heart"
+        android:scaleType="center"
         android:layout_marginStart="44dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/ic_heart"
+        android:contentDescription="Избранное"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnHome" />
 
@@ -47,9 +59,13 @@
         android:id="@+id/btnNotif"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:background="@drawable/ic_notification"
+        android:scaleType="center"
         android:layout_marginEnd="44dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/ic_notification"
+        android:contentDescription="Уведомления"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnUser" />
 
@@ -58,9 +74,13 @@
         android:id="@+id/btnUser"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         android:background="@drawable/ic_user"
+        android:scaleType="center"
         android:layout_marginEnd="44dp"
         android:layout_marginBottom="30dp"
+        android:contentDescription="Профиль"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

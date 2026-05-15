@@ -1,66 +1,84 @@
 package com.example.notes_kazakov.presentations;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes_kazakov.R;
 import com.example.notes_kazakov.datas.Basket;
+import com.example.notes_kazakov.datas.Category;
+import com.example.notes_kazakov.datas.Item;
 import com.example.notes_kazakov.datas.ItemAdapter;
+import com.example.notes_kazakov.datas.iOnClickInterface;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    public  MainActivity init;
+    public static MainActivity init;
     public ArrayList<Basket> BasketList = new ArrayList<>();
-    public ArrayList<ClipData.Item> Items;
-    public iOnClickInterface AddBasker = new iiOnClickInterface(){
+    public ArrayList<Item> Items;
+    private Context context;
+
+    public iOnClickInterface AddBasker = new iOnClickInterface() {
         @Override
         public void setClick(View view, int position) {
-            Basket Item = BasketList.stream().filter(item -> item.Id == position).findAny().orElse(null);
-            Item FindItem = Items.stream().filter(item -> item.Id == position).findAny().orElse(null);
-            if (Item == null){
-                Item = new Basket(FindItem, 1);
-                BasketList.add(Item);
+            // Находим товар по позиции (лучше по id, но пока так)
+            Item findItem = Items.get(position);
+            boolean found = false;
+            for (Basket b : BasketList) {
+                if (b.Item.id == findItem.id) {
+                    b.Count++;
+                    found = true;
+                    break;
+                }
             }
-            else
-                Item.Count++;
-
-            Toast.makeText(Context, "Товар добавлен в корзину", Toast.LENGTH_SHORT).show();
+            if (!found) {
+                BasketList.add(new Basket(findItem, 1));
+            }
+            Toast.makeText(context, "Товар добавлен в корзину", Toast.LENGTH_SHORT).show();
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Context = this;
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        context = this;
         init = this;
-        ArrayList<Locale.Category> Categorys = CategoryContext.All();
-        Items = ItemContext.All();
 
-        RecyclerView CategoryList = findViewById(R.id.category_list);
-        RecyclerView CardList = findViewById(R.id.card_list);
+        Items = createMockItems();
+        ArrayList<Category> categories = createMockCategories();
 
-        CategoryAdapter CategoryAdapter = new CategoryAdapter(this, Categorys, Click);
-        CategoryList.setAdapter(CategoryAdapter);
+        RecyclerView categoryList = findViewById(R.id.category_list);
+        RecyclerView cardList = findViewById(R.id.card_list);
 
-        ItemAdapter CardAdapter = new ItemAdapter(this, Items, AddBasker);
-        CardList.setAdapter(CardAdapter);
+        ItemAdapter cardAdapter = new ItemAdapter(this, Items, AddBasker);
+        cardList.setAdapter(cardAdapter);
     }
 
-    public void OpenBasketView(View view){
-        Intent NewIntent = new Intent(this, BasketActivity.class);
-        startActivity(NewIntent);
+    private ArrayList<Item> createMockItems() {
+        ArrayList<Item> list = new ArrayList<>();
+        list.add(new Item(1, "Телефон", "Samsung", 25000));
+        list.add(new Item(2, "Наушники", "Sony", 5000));
+        return list;
+    }
+
+    private ArrayList<Category> createMockCategories() {
+        ArrayList<Category> list = new ArrayList<>();
+        list.add(new Category(1, "Электроника"));
+        list.add(new Category(2, "Одежда"));
+        return list;
+    }
+
+    public void openBasketView(View view) {
+        Intent intent = new Intent(this, BasketActivity.class);
+        startActivity(intent);
     }
 }
