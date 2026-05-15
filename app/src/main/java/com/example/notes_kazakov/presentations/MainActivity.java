@@ -2,7 +2,9 @@ package com.example.notes_kazakov.presentations;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -55,5 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
         ItemAdapter CardAdapter = new ItemAdapter(this, Items, AddBasker);
         CardList.setAdapter(CardAdapter);
+    }
+
+    public void OpenBasketView(View view){
+        Intent NewIntent = new Intent(this, BasketActivity.class);
+        startActivity(NewIntent);
     }
 }

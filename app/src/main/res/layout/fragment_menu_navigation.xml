@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:background="@android:color/white"
+    tools:context=".presentations.MenuNavigation">
+
+    <!-- Кнопка корзины (центр, верх) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBasket"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/ic_basket"
+        android:onClick="openBasketView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+/>
+
+    <!-- Кнопка "Домой" (левая нижняя) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnHome"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_home"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Кнопка "Лайк" (вторая слева) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLike"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/ic_heart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnHome" />
+
+    <!-- Кнопка "Уведомления" (третья слева) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNotif"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/ic_notification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnUser" />
+
+    <!-- Кнопка "Пользователь" (правая нижняя) -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUser"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_user"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
